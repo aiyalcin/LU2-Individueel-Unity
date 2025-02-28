@@ -10,6 +10,5 @@ namespace Assets.Scripts
     {
         public string email;
         public string password;
-
     }
 }

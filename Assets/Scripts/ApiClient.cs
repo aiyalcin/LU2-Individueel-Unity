@@ -15,24 +15,27 @@ public class ApiClient : MonoBehaviour
         };
 
         string json = JsonUtility.ToJson(registerDto);
-        Debug.Log(json);
-        await PerformApiCall("https://localhost:7023/account/register", "POST", json);
-
+        Debug.Log("Register JSON: " + json);
+        await PerformApiCall("https://localhost:7023/users", "POST", json);
     }
 
     public async void Login(string Email, string Password)
     {
-        var registerDto = new PostLoginRequestDTO()
+        var loginDto = new PostLoginRequestDTO()
         {
             email = Email,
             password = Password
         };
 
-        string json = JsonUtility.ToJson(registerDto);
+        string json = JsonUtility.ToJson(loginDto);
+        Debug.Log("Login JSON: " + json);
 
-        var response = await PerformApiCall("https://localhost:7023/account/login", "POST", json);
-        JsonUtility.FromJson<PostLoginResponseDTO> (response);
-        Debug.Log(response);
+        var response = await PerformApiCall("https://localhost:7023/users", "POST", json);
+        if (response != null)
+        {
+            JsonUtility.FromJson<PostLoginResponseDTO>(response);
+            Debug.Log("Login Response: " + response);
+        }
     }
 
     private async Task<string> PerformApiCall(string url, string method, string jsonData = null, string token = null)
@@ -47,20 +50,22 @@ public class ApiClient : MonoBehaviour
 
             request.downloadHandler = new DownloadHandlerBuffer();
             request.SetRequestHeader("Content-Type", "application/json");
-
             if (!string.IsNullOrEmpty(token))
             {
                 request.SetRequestHeader("Authorization", "Bearer " + token);
             }
 
+            Debug.Log("Sending request to: " + url);
             await request.SendWebRequest();
+
             if (request.result == UnityWebRequest.Result.Success)
             {
+                Debug.Log("API call successful: " + request.downloadHandler.text);
                 return request.downloadHandler.text;
             }
             else
             {
-                Debug.LogError("Fout bij API-aanroep: " + request.error);
+                Debug.LogError("Error in API call: " + request.error);
                 return null;
             }
         }

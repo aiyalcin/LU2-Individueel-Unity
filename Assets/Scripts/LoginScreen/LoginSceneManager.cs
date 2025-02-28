@@ -15,9 +15,11 @@ public class LoginSceneManager : MonoBehaviour
     public TMP_Text UsernameErrorBanner;
     public TMP_Text PasswordErrorBanner;
     private CredentialsValidator _credentialsValidator;
+    private ApiClient _apiClient;
     private void Start()
     {
         _credentialsValidator = new CredentialsValidator();
+        _apiClient = new ApiClient();
     }
     // Optional: Reference to a Text UI element to display the input
     private string _enteredEmail;
@@ -32,6 +34,7 @@ public class LoginSceneManager : MonoBehaviour
         var (isValidPassword, returnString2) = _credentialsValidator.ValidatePassword(_enteredPassword);
         if (isValidEmail && isValidPassword)
         {
+            _apiClient.Login(_enteredEmail, _enteredPassword);
             Debug.Log("Login successful");
         }
         else

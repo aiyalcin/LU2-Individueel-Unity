@@ -11,9 +11,11 @@ public class RegisterSceneManager : MonoBehaviour
     private string _enteredEmail;
     private string _enteredPassword;
     private CredentialsValidator _credentialsValidator;
+    private ApiClient _apiClient;
     private void Start()
     {
         _credentialsValidator = new CredentialsValidator();
+        _apiClient = new ApiClient();
     }
     // Update is called once per frame
     public void OnRegisterButtonPressed()
@@ -24,6 +26,7 @@ public class RegisterSceneManager : MonoBehaviour
         var (isValidPassword, returnString2) = _credentialsValidator.ValidatePassword(_enteredPassword);
         if (isValidEmail && isValidPassword)
         {
+            _apiClient.Register(_enteredEmail, _enteredPassword);
             Debug.Log("Register successful");
         }
         else

@@ -56,7 +56,7 @@ public class CredentialsValidator
         {
             return (false, "Password should contain at least one lowercase letter");
         }
-        else if (_enteredPassword.Any(char.IsSymbol) == false)
+        else if (_enteredPassword.Any(char.IsLetterOrDigit) == false)
         {
             return (false, "Password should contain at least one special character");
         }
