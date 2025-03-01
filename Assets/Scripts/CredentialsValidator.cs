@@ -44,7 +44,7 @@ public class CredentialsValidator
         {
             return (false, "Password length should be longer than 10 characters");
         }
-        else if (_enteredPassword.Any(char.IsDigit) == false)
+        else if (_enteredPassword.Any(char.IsNumber) == false)
         {
             return (false, "Password should contain at least one digit");
         }

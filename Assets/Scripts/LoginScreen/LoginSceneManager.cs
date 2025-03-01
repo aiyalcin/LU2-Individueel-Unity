@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,33 +10,32 @@ using UnityEngine.SceneManagement;
 public class LoginSceneManager : MonoBehaviour
 {
     public TMP_InputField EmailInputField;
-
     public TMP_InputField PasswordInputField;
-
     public TMP_Text UsernameErrorBanner;
     public TMP_Text PasswordErrorBanner;
+    public TMP_Text NoAccountErrorBannerText;
     private CredentialsValidator _credentialsValidator;
     private ApiClient _apiClient;
+
     private void Start()
     {
         _credentialsValidator = new CredentialsValidator();
         _apiClient = new ApiClient();
     }
-    // Optional: Reference to a Text UI element to display the input
+
     private string _enteredEmail;
     private string _enteredPassword;
-    
-    // Method to handle button click
+
     public void OnLoginButtonPressed()
     {
         _enteredEmail = EmailInputField.text;
-        _enteredPassword = PasswordInputField.text;
+        _enteredPassword = EmailInputField.text;
         var (isValidEmail, returnString) = _credentialsValidator.ValidateEmail(_enteredEmail);
         var (isValidPassword, returnString2) = _credentialsValidator.ValidatePassword(_enteredPassword);
         if (isValidEmail && isValidPassword)
         {
             _apiClient.Login(_enteredEmail, _enteredPassword);
-            Debug.Log("Login successful");
+            
         }
         else
         {
@@ -48,6 +48,4 @@ public class LoginSceneManager : MonoBehaviour
     {
         SceneManager.LoadScene("RegisterScene");
     }
-    
 }
-

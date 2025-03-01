@@ -1,11 +1,13 @@
 using System.Text;
 using System.Threading.Tasks;
 using Assets.Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class ApiClient : MonoBehaviour
 {
+
     public async void Register(string Email, string Password)
     {
         var registerDto = new PostLoginRequestDTO()
@@ -16,7 +18,7 @@ public class ApiClient : MonoBehaviour
 
         string json = JsonUtility.ToJson(registerDto);
         Debug.Log("Register JSON: " + json);
-        await PerformApiCall("https://localhost:7023/users", "POST", json);
+        await PerformApiCall("https://localhost:7023/account/register", "POST", json);
     }
 
     public async void Login(string Email, string Password)
@@ -30,7 +32,7 @@ public class ApiClient : MonoBehaviour
         string json = JsonUtility.ToJson(loginDto);
         Debug.Log("Login JSON: " + json);
 
-        var response = await PerformApiCall("https://localhost:7023/users", "POST", json);
+        var response = await PerformApiCall("https://localhost:7023/account/login", "POST", json);
         if (response != null)
         {
             JsonUtility.FromJson<PostLoginResponseDTO>(response);
